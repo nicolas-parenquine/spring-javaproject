@@ -37,21 +37,30 @@ public class PilotoService {
 
     public PilotoF1 atualizar(Integer id, PilotoF1 piloto) {
 
-        PilotoF1 pilotoExistente = buscarPorId(id);
+        PilotoF1 pilotoEntity = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Piloto não encontrado"));
 
-        pilotoExistente.setNome(piloto.getNome());
-        pilotoExistente.setNacionalidade(piloto.getNacionalidade());
-        pilotoExistente.setEquipe(piloto.getEquipe());
-        pilotoExistente.setAtivo(piloto.isAtivo());
+        PilotoF1 pilotoAtualizado = PilotoF1.builder()
+                .id(pilotoEntity.getId())
+                .nome(piloto.getNome() != null
+                        ? piloto.getNome()
+                        : pilotoEntity.getNome())
+                .nacionalidade(piloto.getNacionalidade() != null
+                        ? piloto.getNacionalidade()
+                        : pilotoEntity.getNacionalidade())
+                .equipe(piloto.getEquipe() != null
+                        ? piloto.getEquipe()
+                        : pilotoEntity.getEquipe())
+                .ativo(piloto.isAtivo())
+                .build();
 
-        return repository.saveAndFlush(pilotoExistente);
+        return repository.saveAndFlush(pilotoAtualizado);
     }
 
-    public void deletar(Integer id) {
+    public void deletarPorNome(String nome) {
+        PilotoF1 piloto = buscarPilotoPorNome(nome);
 
-        PilotoF1 piloto = buscarPorId(id);
-
-        repository.delete(piloto);
-        repository.flush();
+        repository.deleteByNome(piloto.getNome());
     }
 }
