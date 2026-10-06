@@ -3,6 +3,7 @@ package br.com.formula1.cadastro_piloto.controller;
 import br.com.formula1.cadastro_piloto.business.PilotoService;
 import br.com.formula1.cadastro_piloto.infrastructure.entitys.PilotoF1;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,36 +16,37 @@ public class PilotoController {
     private final PilotoService pilotoService;
 
     @PostMapping
-    public PilotoF1 salvar(@RequestBody PilotoF1 piloto) {
-        return pilotoService.salvar(piloto);
+    public ResponseEntity<Void> salvarPiloto(@RequestBody PilotoF1 piloto) {
+        pilotoService.salvar(piloto);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public List<PilotoF1> listarTodos() {
-        return pilotoService.listarTodos();
+    @GetMapping("/todos")
+    public ResponseEntity<List<PilotoF1>> listarTodos() {
+        return ResponseEntity.ok(pilotoService.listarTodos());
     }
 
-    @GetMapping("/id/{id}")
-    public PilotoF1 buscarPorId(@PathVariable Integer id) {
-        return pilotoService.buscarPorId(id);
+    @GetMapping("/id")
+    public ResponseEntity<PilotoF1> buscarPilotoPorId(@RequestParam Integer id) {
+        return ResponseEntity.ok(pilotoService.buscarPorId(id));
     }
 
-    @GetMapping("/nome/{nome}")
-    public PilotoF1 buscarPorNome(@PathVariable String nome) {
-        return pilotoService.buscarPilotoPorNome(nome);
+    @GetMapping("/nome")
+    public ResponseEntity<PilotoF1> buscarPilotoPorNome(@RequestParam String nome) {
+        return ResponseEntity.ok(pilotoService.buscarPilotoPorNome(nome));
     }
 
-    @PutMapping("/{id}")
-    public PilotoF1 atualizar(
-            @PathVariable Integer id,
-            @RequestBody PilotoF1 piloto) {
-
-        return pilotoService.atualizar(id, piloto);
+    @PutMapping
+    public ResponseEntity<Void> atualizarPilotoPorId(
+            @RequestBody PilotoF1 piloto,
+            @RequestParam Integer id) {
+        pilotoService.atualizar(id, piloto);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/nome/{nome}")
-    public void deletarPorNome(@PathVariable String nome) {
+    @DeleteMapping
+    public ResponseEntity<Void> deletarPilotoPorNome(@RequestParam String nome) {
         pilotoService.deletarPorNome(nome);
+        return ResponseEntity.ok().build();
     }
 }
-
