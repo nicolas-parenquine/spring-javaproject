@@ -26,5 +26,5 @@ public class PilotoF1 {
     private String equipe;
 
     @Column(name = "ativo", nullable = false)
-    private boolean ativo;
+    private Boolean ativo;
 }

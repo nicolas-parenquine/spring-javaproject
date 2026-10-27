@@ -36,10 +36,8 @@ public class PilotoService {
     }
 
     public PilotoF1 atualizar(Integer id, PilotoF1 piloto) {
-
-        PilotoF1 pilotoEntity = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Piloto não encontrado"));
+        PilotoF1 pilotoEntity = repository.findById(id).orElseThrow(() ->
+                new RuntimeException("Piloto não encontrado"));
 
         PilotoF1 pilotoAtualizado = PilotoF1.builder()
                 .id(pilotoEntity.getId())
@@ -52,7 +50,9 @@ public class PilotoService {
                 .equipe(piloto.getEquipe() != null
                         ? piloto.getEquipe()
                         : pilotoEntity.getEquipe())
-                .ativo(piloto.isAtivo())
+                .ativo(piloto.getAtivo() != null
+                        ? piloto.getAtivo()
+                        : pilotoEntity.getAtivo())
                 .build();
 
         return repository.saveAndFlush(pilotoAtualizado);

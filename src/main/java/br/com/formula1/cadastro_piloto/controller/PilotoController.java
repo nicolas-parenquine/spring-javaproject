@@ -21,31 +21,36 @@ public class PilotoController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/todos")
+    // GET
+    @GetMapping
     public ResponseEntity<List<PilotoF1>> listarTodos() {
         return ResponseEntity.ok(pilotoService.listarTodos());
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<PilotoF1> buscarPilotoPorId(@RequestParam Integer id) {
+    // GET
+    @GetMapping("/{id}")
+    public ResponseEntity<PilotoF1> buscarPilotoPorId(@PathVariable Integer id) {
         return ResponseEntity.ok(pilotoService.buscarPorId(id));
     }
 
-    @GetMapping("/nome")
-    public ResponseEntity<PilotoF1> buscarPilotoPorNome(@RequestParam String nome) {
+    // GET
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<PilotoF1> buscarPilotoPorNome(@PathVariable String nome) {
         return ResponseEntity.ok(pilotoService.buscarPilotoPorNome(nome));
     }
 
-    @PutMapping
+    // PUT
+    @PutMapping("/{id}")
     public ResponseEntity<Void> atualizarPilotoPorId(
             @RequestBody PilotoF1 piloto,
-            @RequestParam Integer id) {
+            @PathVariable Integer id) {
         pilotoService.atualizar(id, piloto);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deletarPilotoPorNome(@RequestParam String nome) {
+    // DELETE
+    @DeleteMapping("/nome/{nome}")
+    public ResponseEntity<Void> deletarPilotoPorNome(@PathVariable String nome) {
         pilotoService.deletarPorNome(nome);
         return ResponseEntity.ok().build();
     }
