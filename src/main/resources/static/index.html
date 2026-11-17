@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111318">
+    <title>Pitlane | Pilotos de F1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="Pitlane, início">
+                <span class="brand-mark" aria-hidden="true">P</span>
+                <span>PIT<span class="brand-accent">LANE</span></span>
+            </a>
+            <div class="topbar-meta">
+                <span class="live-dot" aria-hidden="true"></span>
+                <span>GESTÃO DE GRID</span>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero" aria-labelledby="page-title">
+                <div>
+                    <p class="eyebrow"><span class="eyebrow-line"></span> CENTRO DE CONTROLE · FÓRMULA 1</p>
+                    <h1 id="page-title">Pilotos<span class="title-period">.</span></h1>
+                    <p class="hero-copy">Gerencie os nomes que fazem história na pista.</p>
+                </div>
+                <div class="hero-mark" aria-hidden="true">
+                    <span>F1</span>
+                    <span class="hero-mark-caption">GRID<br>CONTROL</span>
+                </div>
+            </section>
+
+            <section class="stats" aria-label="Resumo do grid">
+                <article class="stat-card">
+                    <span class="stat-label">PILOTOS NO GRID</span>
+                    <strong id="total-count" class="stat-value">—</strong>
+                    <span class="stat-foot">cadastros encontrados</span>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-label">EM ATIVIDADE</span>
+                    <strong id="active-count" class="stat-value">—</strong>
+                    <span class="stat-foot">pilotos ativos</span>
+                </article>
+                <article class="stat-card stat-card-accent">
+                    <span class="stat-label">PAINEL DE DADOS</span>
+                    <strong class="stat-api"><span class="live-dot" id="api-status-dot" aria-hidden="true"></span><span id="api-status-label">CONECTANDO À API</span></strong>
+                    <span class="stat-foot">Spring Boot · /piloto</span>
+                </article>
+            </section>
+
+            <section class="workspace" aria-label="Gerenciamento de pilotos">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">01 / DIRETÓRIO</p>
+                        <h2>Grid de pilotos</h2>
+                    </div>
+                    <button class="button button-primary" id="new-pilot-button" type="button">
+                        <span aria-hidden="true">＋</span> Novo piloto
+                    </button>
+                </div>
+
+                <form class="search-bar" id="search-form" role="search">
+                    <label class="sr-only" for="search-input">Buscar piloto pelo nome</label>
+                    <span class="search-icon" aria-hidden="true">⌕</span>
+                    <input id="search-input" name="nome" type="search" placeholder="Buscar piloto pelo nome..." autocomplete="off">
+                    <button class="button button-quiet" type="submit">Buscar <span aria-hidden="true">↗</span></button>
+                    <button class="button button-text" id="clear-search-button" type="button" hidden>Limpar</button>
+                </form>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">PILOTO</th>
+                                <th scope="col">NACIONALIDADE</th>
+                                <th scope="col">EQUIPE</th>
+                                <th scope="col">STATUS</th>
+                                <th scope="col" class="actions-heading">AÇÕES</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pilots-table-body">
+                            <tr><td class="table-message" colspan="5">Carregando pilotos...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="table-footer"><span id="results-count">—</span><span>API REST <span class="footer-divider">/</span> DADOS EM TEMPO REAL</span></p>
+            </section>
+
+            <section class="form-panel" id="form-panel" aria-labelledby="form-title" hidden>
+                <div class="section-heading form-heading">
+                    <div>
+                        <p class="eyebrow">02 / CADASTRO</p>
+                        <h2 id="form-title">Novo piloto</h2>
+                    </div>
+                    <button class="icon-button" id="close-form-button" type="button" aria-label="Fechar formulário">×</button>
+                </div>
+                <form id="pilot-form">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="pilot-name">Nome</label>
+                            <input id="pilot-name" name="nome" type="text" maxlength="120" required>
+                        </div>
+                        <div class="field">
+                            <label for="pilot-nationality">Nacionalidade</label>
+                            <input id="pilot-nationality" name="nacionalidade" type="text" maxlength="80" required>
+                        </div>
+                        <div class="field">
+                            <label for="pilot-team">Equipe</label>
+                            <input id="pilot-team" name="equipe" type="text" maxlength="100" required>
+                        </div>
+                        <div class="field field-status">
+                            <label for="pilot-active">Status</label>
+                            <select id="pilot-active" name="ativo">
+                                <option value="true">Ativo</option>
+                                <option value="false">Inativo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="button button-text" id="cancel-form-button" type="button">Cancelar</button>
+                        <button class="button button-primary" id="save-button" type="submit">Salvar piloto <span aria-hidden="true">↗</span></button>
+                    </div>
+                </form>
+            </section>
+
+            <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+        </main>
+
+        <footer class="footer">
+            <span>PITLANE <span class="footer-divider">/</span> CADASTRO DE PILOTOS</span>
+            <span>FEITO PARA A VELOCIDADE <span class="footer-accent">●</span></span>
+        </footer>
+    </div>
+</body>
+</html>
